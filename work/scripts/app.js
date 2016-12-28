@@ -58,7 +58,7 @@
     app.saveSelectedCities();
     app.toggleAddDialog(false);
   });
-
+  
   document.getElementById('butAddCancel').addEventListener('click', function() {
     // Close the add new city dialog
     app.toggleAddDialog(false);
@@ -205,6 +205,7 @@
     var selectedCities = JSON.stringify(app.selectedCities);
     localStorage.selectedCities = selectedCities;
   };
+  
 
   app.getIconClass = function(weatherCode) {
     // Weather codes: https://developer.yahoo.com/weather/documentation.html#codes
@@ -311,9 +312,10 @@
     }
   };
   // TODO uncomment line below to test app with fake data
-  // app.updateForecastCard(initialWeatherForecast);
+  app.updateForecastCard(initialWeatherForecast);
 
-  /************************************************************************
+  // TODO add startup code here
+/************************************************************************
    *
    * Code required to start the app
    *
@@ -324,7 +326,6 @@
    *   SimpleDB (https://gist.github.com/inexorabletash/c8069c042b734519680c)
    ************************************************************************/
 
-  // TODO add startup code here
   app.selectedCities = localStorage.selectedCities;
   if (app.selectedCities) {
     app.selectedCities = JSON.parse(app.selectedCities);
@@ -342,7 +343,12 @@
       {key: initialWeatherForecast.key, label: initialWeatherForecast.label}
     ];
     app.saveSelectedCities();
-  }
+  }  
 
   // TODO add service worker code here
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+             .register('./service-worker.js')
+             .then(function() { console.log('Service Worker Registered'); });
+  }  
 })();
